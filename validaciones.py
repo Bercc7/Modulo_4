@@ -1,6 +1,6 @@
 
 class ErrorValidacion(Exception):
-    """Excepción, dato del cliente no es válido."""
+    """Excepción, dato del cliente no válido."""
     pass
 
 def validar_email(email):
