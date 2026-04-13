@@ -4,3 +4,5 @@ ENV/
 __pycache__/
 *.py[cod]
 *.sqlite3
+*.db
+*.csv

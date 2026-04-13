@@ -1,4 +1,5 @@
 import tkinter as tk
+from apis import enviar_notificacion_bienvenida
 from tkinter import messagebox, ttk
 
 from modelos import ClienteRegular, ClientePremium, ClienteCorporativo
@@ -51,12 +52,17 @@ def iniciar_interfaz():
                 nuevo_cliente = ClienteRegular(dni, nombre, email, telefono)
             elif tipo == "Premium":
                 nuevo_cliente = ClientePremium(dni, nombre, email, telefono, puntos=100)
-            else:
+            else: # Corporativo
                 nuevo_cliente = ClienteCorporativo(dni, nombre, email, telefono, nombre_empresa="Empresa S.A.")
 
             guardar_cliente(nuevo_cliente)
             
-            messagebox.showinfo("Éxito", f"Cliente {nombre} guardado correctamente.")
+            api_exitosa, mensaje_api = enviar_notificacion_bienvenida(nombre, email)
+            
+            texto_final = f"Cliente {nombre} guardado correctamente.\nEstatus API: {mensaje_api}"
+            
+            messagebox.showinfo("Éxito", texto_final)
+            
             entry_dni.delete(0, tk.END)
             entry_nombre.delete(0, tk.END)
             entry_email.delete(0, tk.END)
@@ -68,7 +74,6 @@ def iniciar_interfaz():
             messagebox.showerror("Error de Base de Datos", str(e))
         except Exception as e:
             messagebox.showerror("Error Inesperado", f"Ocurrió un error: {e}")
-
     def accion_exportar():
         try:
             mensaje = exportar_a_csv()
